@@ -20,7 +20,6 @@ By doing so, it's basically as if we emulate a minimalist Android environment in
 ## Known Issues
 
 - Post puzzle solution animation is a bit slow. (Likely cause of I/O overhead)
-- Very rarely, videos don't play although you are still able to skip them in order to progress the game. (sceAvPlayer qwirk).
 
 ## Setup Instructions (For End Users)
 
@@ -86,4 +85,4 @@ cmake .. && make
 ## Credits
 
 - TheFloW for the original .so loader.
-- withLogic for testing the homebrew and providing screenshots.
+- withLogic for testing the homebrew.
