@@ -68,20 +68,28 @@ int video_audio_thread(SceSize args, void *argp) {
 	return sceKernelExitDeleteThread(0);
 }
 
+uint8_t *vid_buf;
 FILE *vid_handle;
 int video_start(void *argp, const char *fname) {
+	vid_buf = (uint8_t *)malloc(video_fsize);
 	vid_handle = fopen("ux0:data/layton_curious/data/main.obb", "rb");
 	fseek(vid_handle, video_offs, SEEK_SET);
+	fread(vid_buf, 1, video_fsize, vid_handle);
+	fclose(vid_handle);
 	return 0;
 }
 
 int video_stop(void *argp) {
-	return fclose(vid_handle);
+	free(vid_buf);
+	return 0;
 }
 
 int video_read(void *argp, uint8_t *buffer, uint64_t pos, uint32_t len) {
-	fseek(vid_handle, video_offs + pos, SEEK_SET);
-	return fread(buffer, 1, len, vid_handle);
+	if (pos + len > video_fsize) {
+		len = video_fsize - pos;
+	}
+	sceClibMemcpy(buffer, &vid_buf[pos], len);
+	return len;
 }
 
 long long unsigned int video_size(void *argp) {

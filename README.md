@@ -16,6 +16,7 @@ By doing so, it's basically as if we emulate a minimalist Android environment in
 ## Note
 
 - This port works only with versions of the game where an obb file was still used. It has been tested with v.1.0.1 and v.1.0.3.
+- Very rarely, videos can freeze or lack audio. If that happens, restart the homebrew (sceAvPlayer bug). You'll still be able to skip the video as usual.
 
 ## Known Issues
 
