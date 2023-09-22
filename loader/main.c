@@ -425,7 +425,7 @@ int nanosleep_hook(const struct timespec *req, struct timespec *rem) {
 FILE *AAssetManager_open(void *mgr, const char *fname, int mode) {
 	char full_fname[256];
 	sprintf(full_fname, "ux0:data/layton_curious/assets/%s", fname);
-	printf("AAssetManager_open %s\n", full_fname);
+	//printf("AAssetManager_open %s\n", full_fname);
 	return fopen(full_fname, "rb");
 }
 
@@ -1375,6 +1375,7 @@ void *real_main(void *argv) {
 			glBindFramebuffer(GL_FRAMEBUFFER, main_fb);
 			glViewport(0, 0, SCREEN_H, SCREEN_W);
 			glScissor(0, 0, SCREEN_H, SCREEN_W);
+			glClear(GL_COLOR_BUFFER_BIT);
 			Java_com_Level5_LT1R_MainActivity_render(fake_env, NULL, delta / 16667, 0, touch.reportNum > 2 ? 2 : touch.reportNum,
 				SCREEN_H - touch.report[0].y / 2, touch.report[0].x / 2,
 				SCREEN_H - touch.report[1].y / 2, touch.report[1].x / 2);
