@@ -409,19 +409,7 @@ void glShaderSource_hook(GLuint shader, GLsizei count, const GLchar* const* stri
 	if (strstr(*string, "samplerExternalOES")) {
 		glShaderSource(shader, count, &patched_frag, NULL);
 	} else {
-		// FIXME: Workaround to enforce proper mult order. This NEEDS to be fixed on vitaGL level
-		char *s = strstr(*string, " modelview * vertex * projection");
-		if (s) {
-			char *shad = malloc(strlen(*string) + 1);
-			sceClibMemcpy(shad, *string, strlen(*string) + 1);
-			s = strstr(shad, " modelview * vertex * projection");
-			s[0] = '(';
-			s[19] = ')';
-			glShaderSource(shader, count, &shad, NULL);
-			free(shad);
-		} else {
-			glShaderSource(shader, count, string, length);
-		}
+		glShaderSource(shader, count, string, length);
 	}
 }
 
