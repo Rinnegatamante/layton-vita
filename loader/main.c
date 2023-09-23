@@ -1149,7 +1149,6 @@ void DeleteLocalRef(void *env, void *ref) {
 void setup_2d_draw_rotated(float *bg_attributes, float x, float y, float x2, float y2) {
 	glUseProgram(0);
 	glDisable(GL_DEPTH_TEST);
-	glDepthMask(GL_FALSE);
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glDisable(GL_ALPHA_TEST);
@@ -1199,7 +1198,6 @@ void setup_2d_draw_rotated(float *bg_attributes, float x, float y, float x2, flo
 void setup_2d_draw(float *bg_attributes, float x, float y, float x2, float y2) {
 	glUseProgram(0);
 	glDisable(GL_DEPTH_TEST);
-	glDepthMask(GL_FALSE);
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glDisable(GL_ALPHA_TEST);
@@ -1361,8 +1359,8 @@ void *real_main(void *argv) {
 	printf("Entering loop\n");
 	float *bg_attributes = (float*)malloc(sizeof(float) * 44);
 	uint32_t tick = sceKernelGetProcessTimeLow();
+	glEnable(GL_SCISSOR_TEST);
 	for (;;) {
-		glEnable(GL_SCISSOR_TEST);
 		SceTouchData touch;
 		sceTouchPeek(SCE_TOUCH_PORT_FRONT, &touch, 1);
 		uint32_t delta = sceKernelGetProcessTimeLow() - tick;
