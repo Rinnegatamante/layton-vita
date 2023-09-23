@@ -9,6 +9,11 @@ By doing so, it's basically as if we emulate a minimalist Android environment in
 
 ## Changelog
 
+### v1.0.1
+
+- Fixed an issue causing rotate elements to be invisible.
+- Fixed an issue cause game locking up in certain circumstances.
+
 ### v1.0
 
 - Initial release.
