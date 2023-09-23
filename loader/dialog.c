@@ -136,6 +136,7 @@ void fatal_error(const char *fmt, ...) {
 
   vglInit(0);
 
+  printf("Error: %s\n", string);
   init_msg_dialog(string);
 
   while (!get_msg_dialog_result())

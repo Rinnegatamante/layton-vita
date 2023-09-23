@@ -419,7 +419,7 @@ void glShaderSource_hook(GLuint shader, GLsizei count, const GLchar* const* stri
 			s[19] = ')';
 			glShaderSource(shader, count, &shad, NULL);
 			free(shad);
-		} else
+		} else {
 			glShaderSource(shader, count, string, length);
 		}
 	}
@@ -734,6 +734,8 @@ static so_default_dynlib default_dynlib[] = {
 	{ "localtime_r", (uintptr_t)&localtime_r },
 	{ "log", (uintptr_t)&log },
 	{ "log10", (uintptr_t)&log10 },
+	{ "logf", (uintptr_t)&logf },
+	{ "log10f", (uintptr_t)&log10f },
 	{ "longjmp", (uintptr_t)&longjmp },
 	{ "lrand48", (uintptr_t)&lrand48 },
 	{ "lrint", (uintptr_t)&lrint },
@@ -741,6 +743,7 @@ static so_default_dynlib default_dynlib[] = {
 	{ "lseek", (uintptr_t)&lseek },
 	{ "malloc", (uintptr_t)&malloc },
 	{ "mbrtowc", (uintptr_t)&mbrtowc },
+	{ "memalign", (uintptr_t)&memalign },
 	{ "memchr", (uintptr_t)&sceClibMemchr },
 	{ "memcmp", (uintptr_t)&memcmp },
 	{ "memcpy", (uintptr_t)&sceClibMemcpy },
@@ -786,6 +789,7 @@ static so_default_dynlib default_dynlib[] = {
 	{ "read", (uintptr_t)&read },
 	{ "realloc", (uintptr_t)&realloc },
 	{ "remove", (uintptr_t)&remove },
+	{ "roundf", (uintptr_t)&roundf },
 	// { "recv", (uintptr_t)&recv },
 	{ "rint", (uintptr_t)&rint },
 	// { "send", (uintptr_t)&send },
