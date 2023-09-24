@@ -181,6 +181,7 @@ void video_open(const char *path, off_t offs, size_t size) {
 #endif
 
 	movie_player = sceAvPlayerInit(&playerInit);
+	sceKernelDelayThread(500 * 1000);
 	sceAvPlayerAddSource(movie_player, "dummy.mp4");
 	
 	audio_thid = sceKernelCreateThread("video_audio_thread", video_audio_thread, 0x10000100 - 10, 0x4000, 0, 0, NULL);
