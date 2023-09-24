@@ -9,6 +9,12 @@ By doing so, it's basically as if we emulate a minimalist Android environment in
 
 ## Changelog
 
+### v1.1
+
+- Reworked Livearea assets (Thanks to YogaBudiW).
+- Added possibility to play the game in flipped portrait mode (Create a file named ux0:data/layton_curious/flip.txt) to enable it.
+- Mitigated the issue for which videos started with way faster speed and no audio and freezed sometimes.
+
 ### v1.0.3
 
 - Removed FuHEN logo.
