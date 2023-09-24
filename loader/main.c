@@ -50,6 +50,8 @@
 
 //#define ENABLE_DEBUG
 
+uint8_t flip_portrait = 0;
+
 typedef struct {
 	unsigned char *elements;
 	int size;
@@ -1165,14 +1167,25 @@ void setup_2d_draw_rotated(float *bg_attributes, float x, float y, float x2, flo
 	bg_attributes[11] = 0.0f;
 	vglVertexPointerMapped(3, bg_attributes);
 	
-	bg_attributes[12] = 0.0f;
-	bg_attributes[13] = 0.0f;
-	bg_attributes[14] = 0.0f;
-	bg_attributes[15] = 1.0f;
-	bg_attributes[16] = 1.0f;
-	bg_attributes[17] = 0.0f;
-	bg_attributes[18] = 1.0f;
-	bg_attributes[19] = 1.0f;
+	if (flip_portrait) {
+		bg_attributes[12] = 1.0f;
+		bg_attributes[13] = 1.0f;
+		bg_attributes[14] = 1.0f;
+		bg_attributes[15] = 0.0f;
+		bg_attributes[16] = 0.0f;
+		bg_attributes[17] = 1.0f;
+		bg_attributes[18] = 0.0f;
+		bg_attributes[19] = 0.0f;
+	} else {
+		bg_attributes[12] = 0.0f;
+		bg_attributes[13] = 0.0f;
+		bg_attributes[14] = 0.0f;
+		bg_attributes[15] = 1.0f;
+		bg_attributes[16] = 1.0f;
+		bg_attributes[17] = 0.0f;
+		bg_attributes[18] = 1.0f;
+		bg_attributes[19] = 1.0f;
+	}
 	vglTexCoordPointerMapped(&bg_attributes[12]);
 	
 	uint16_t *bg_indices = (uint16_t*)&bg_attributes[20];
@@ -1214,14 +1227,25 @@ void setup_2d_draw(float *bg_attributes, float x, float y, float x2, float y2) {
 	bg_attributes[11] = 0.0f;
 	vglVertexPointerMapped(3, bg_attributes);
 	
-	bg_attributes[12] = 0.0f;
-	bg_attributes[13] = 0.0f;
-	bg_attributes[14] = 1.0f;
-	bg_attributes[15] = 0.0f;
-	bg_attributes[16] = 0.0f;
-	bg_attributes[17] = 1.0f;
-	bg_attributes[18] = 1.0f;
-	bg_attributes[19] = 1.0f;
+	if (flip_portrait) {
+		bg_attributes[12] = 1.0f;
+		bg_attributes[13] = 1.0f;
+		bg_attributes[14] = 0.0f;
+		bg_attributes[15] = 1.0f;
+		bg_attributes[16] = 1.0f;
+		bg_attributes[17] = 0.0f;
+		bg_attributes[18] = 0.0f;
+		bg_attributes[19] = 0.0f;
+	} else {
+		bg_attributes[12] = 0.0f;
+		bg_attributes[13] = 0.0f;
+		bg_attributes[14] = 1.0f;
+		bg_attributes[15] = 0.0f;
+		bg_attributes[16] = 0.0f;
+		bg_attributes[17] = 1.0f;
+		bg_attributes[18] = 1.0f;
+		bg_attributes[19] = 1.0f;
+	}
 	vglTexCoordPointerMapped(&bg_attributes[12]);
 	
 	uint16_t *bg_indices = (uint16_t*)&bg_attributes[20];
@@ -1260,6 +1284,12 @@ void *real_main(void *argv) {
 			if (strstr(buffer, "landscape"))
 				force_landscape = 1;
 		}
+	}
+	
+	FILE *f = fopen("ux0:data/layton_curious/flip.txt", "rb");
+	if (f) {
+		flip_portrait = 1;
+		fclose(f);
 	}
 
 	if (check_kubridge() < 0)
@@ -1347,8 +1377,8 @@ void *real_main(void *argv) {
 	printf("Entering loop\n");
 	float *bg_attributes = (float*)malloc(sizeof(float) * 44);
 	uint32_t tick = sceKernelGetProcessTimeLow();
-	glEnable(GL_SCISSOR_TEST);
 	for (;;) {
+		glEnable(GL_SCISSOR_TEST);
 		SceTouchData touch;
 		sceTouchPeek(SCE_TOUCH_PORT_FRONT, &touch, 1);
 		uint32_t delta = sceKernelGetProcessTimeLow() - tick;
@@ -1378,9 +1408,15 @@ void *real_main(void *argv) {
 			glViewport(0, 0, SCREEN_H, SCREEN_W);
 			glScissor(0, 0, SCREEN_H, SCREEN_W);
 			glClear(GL_COLOR_BUFFER_BIT);
-			Java_com_Level5_LT1R_MainActivity_render(fake_env, NULL, delta / 16667, 0, touch.reportNum > 2 ? 2 : touch.reportNum,
-				SCREEN_H - touch.report[0].y / 2, touch.report[0].x / 2,
-				SCREEN_H - touch.report[1].y / 2, touch.report[1].x / 2);
+			if (flip_portrait) {
+				Java_com_Level5_LT1R_MainActivity_render(fake_env, NULL, delta / 16667, 0, touch.reportNum > 2 ? 2 : touch.reportNum,
+					touch.report[0].y / 2, SCREEN_W - touch.report[0].x / 2,
+					touch.report[1].y / 2, SCREEN_W - touch.report[1].x / 2);
+			} else {
+				Java_com_Level5_LT1R_MainActivity_render(fake_env, NULL, delta / 16667, 0, touch.reportNum > 2 ? 2 : touch.reportNum,
+					SCREEN_H - touch.report[0].y / 2, touch.report[0].x / 2,
+					SCREEN_H - touch.report[1].y / 2, touch.report[1].x / 2);
+			}
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			glViewport(0, 0, SCREEN_W, SCREEN_H);
 			glScissor(0, 0, SCREEN_W, SCREEN_H);
