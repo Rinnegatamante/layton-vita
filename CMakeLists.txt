@@ -77,7 +77,6 @@ vita_create_vpk(layton.vpk ${VITA_TITLEID} eboot.bin
        ${CMAKE_SOURCE_DIR}/livearea/bg0.png sce_sys/livearea/contents/bg0.png
        ${CMAKE_SOURCE_DIR}/livearea/startup.png sce_sys/livearea/contents/startup.png
        ${CMAKE_SOURCE_DIR}/livearea/template.xml sce_sys/livearea/contents/template.xml
-       ${CMAKE_SOURCE_DIR}/livearea/pic0.png sce_sys/pic0.png
 )
 
 add_custom_target(copy
