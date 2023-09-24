@@ -71,11 +71,6 @@ int video_audio_thread(SceSize args, void *argp) {
 uint8_t *vid_buf;
 FILE *vid_handle;
 int video_start(void *argp, const char *fname) {
-	vid_buf = (uint8_t *)malloc(video_fsize);
-	vid_handle = fopen("ux0:data/layton_curious/data/main.obb", "rb");
-	fseek(vid_handle, video_offs, SEEK_SET);
-	fread(vid_buf, 1, video_fsize, vid_handle);
-	fclose(vid_handle);
 	return 0;
 }
 
@@ -180,8 +175,13 @@ void video_open(const char *path, off_t offs, size_t size) {
 	playerInit.debugLevel = 3;
 #endif
 
+	vid_buf = (uint8_t *)malloc(video_fsize);
+	vid_handle = fopen("ux0:data/layton_curious/data/main.obb", "rb");
+	fseek(vid_handle, video_offs, SEEK_SET);
+	fread(vid_buf, 1, video_fsize, vid_handle);
+	fclose(vid_handle);
+
 	movie_player = sceAvPlayerInit(&playerInit);
-	sceKernelDelayThread(500 * 1000);
 	sceAvPlayerAddSource(movie_player, "dummy.mp4");
 	
 	audio_thid = sceKernelCreateThread("video_audio_thread", video_audio_thread, 0x10000100 - 10, 0x4000, 0, 0, NULL);
